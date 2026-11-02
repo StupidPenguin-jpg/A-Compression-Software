@@ -1,0 +1,16 @@
+﻿node_modules/
+src-tauri/target/
+dist/
+data/
+*.zip
+*.7z
+*.msi
+*.pdb
+*.dll
+*.exe
+!cli/compressor-cli.exe
+testing/
+.screenshots/
+.trae-html-share-packages/
+*.log
+Thumbs.db

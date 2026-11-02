@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AnyCompresssionThatMayWork · 压缩工具</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/>
+            <path d="M4 7.5 12 12l8-4.5M12 12v9"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Anything That May Work</h1>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="settingsBtn" type="button" title="设置" aria-label="设置">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9c.24.6.82 1 1.46 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+        <div class="window-controls" id="windowControls" hidden>
+          <button class="win-btn" type="button" data-win="minimize" title="最小化" aria-label="最小化">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14"/></svg>
+          </button>
+          <button class="win-btn" type="button" data-win="toggleMaximize" title="最大化" aria-label="最大化">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>
+          </button>
+          <button class="win-btn win-close" type="button" data-win="close" title="关闭" aria-label="关闭">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <main class="app-body">
+        <div class="mode-bar">
+        <div class="segmented" role="tablist" aria-label="操作模式">
+          <button class="segment is-active" type="button" role="tab" aria-selected="true" data-mode="compress">
+            <span class="seg-index">01</span>
+            <span class="seg-body">
+              <span class="seg-label">压缩</span>
+              <span class="seg-en">COMPRESS</span>
+            </span>
+          </button>
+          <button class="segment" type="button" role="tab" aria-selected="false" data-mode="decompress">
+            <span class="seg-index">02</span>
+            <span class="seg-body">
+              <span class="seg-label">解压</span>
+              <span class="seg-en">EXTRACT</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <section class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="选择文件">
+        <span class="corner tl" aria-hidden="true"></span>
+        <span class="corner tr" aria-hidden="true"></span>
+        <span class="corner bl" aria-hidden="true"></span>
+        <span class="corner br" aria-hidden="true"></span>
+        <span class="drop-code" aria-hidden="true">FILE_INPUT // DROP ZONE</span>
+        <div class="drop-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 15V4M8 8l4-4 4 4"/>
+            <path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
+          </svg>
+        </div>
+        <p class="drop-title" id="dropTitle">拖拽文件到这里</p>
+        <p class="drop-sub">或 <span class="link">点击选择</span><span class="drop-sep">/</span><span id="dropHint">支持任意文件</span></p>
+        <input type="file" id="fileInput" multiple hidden>
+      </section>
+
+      <section class="file-panel" id="filePanel" hidden>
+        <div class="file-panel-head">
+          <span class="queue-label">QUEUE</span>
+          <span id="fileCount">已添加 0 个文件</span>
+          <button class="text-btn" id="clearBtn" type="button">清空</button>
+        </div>
+        <ul class="file-list" id="fileList"></ul>
+      </section>
+
+      <section class="options">
+        <div class="field" id="formatField">
+          <span class="field-label">压缩格式</span>
+          <div class="pills" id="formatPills" role="group" aria-label="压缩格式">
+            <button class="pill is-active" type="button" data-format="zip">ZIP</button>
+            <button class="pill" type="button" data-format="tar">TAR</button>
+            <button class="pill" type="button" data-format="tar.gz">TAR.GZ</button>
+          </div>
+        </div>
+
+        <div class="field" id="passwordField">
+          <span class="field-label">密码</span>
+          <div class="path-box">
+            <span class="path-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="10" width="16" height="10" rx="2"/>
+                <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+              </svg>
+            </span>
+            <span class="path-text">
+              <input class="path-file password-input" id="passwordInput" type="password" spellcheck="false" autocomplete="off" aria-label="压缩包密码">
+            </span>
+            <button class="text-btn" id="togglePasswordBtn" type="button">显示</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label" id="outputLabel">保存到</span>
+          <div class="path-box">
+            <span class="path-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              </svg>
+            </span>
+            <span class="path-text">
+              <span class="path-dir" id="outputDir"></span>
+              <input class="path-file is-empty" id="outputName" type="text" spellcheck="false" autocomplete="off" placeholder="尚未选择文件" aria-label="输出文件名">
+            </span>
+            <button class="text-btn" id="changeDirBtn" type="button">更改</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="progress-area" id="progressArea" hidden>
+        <div class="progress-head">
+          <span id="progressLabel">正在压缩…</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </section>
+      </main>
+
+      <aside class="app-visual" aria-hidden="true">
+        <span class="visual-fade"></span>
+      </aside>
+    </div>
+
+    <footer class="app-footer">
+      <button class="primary-btn" id="startBtn" type="button" disabled>开始压缩</button>
+      <button class="ghost-btn" id="cancelBtn" type="button" hidden>取消</button>
+      <p class="hint" id="hint"></p>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop" id="settingsModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <h2 id="settingsTitle">设置</h2>
+      <p class="modal-sub">修改默认保存位置，之后每次都会自动使用。</p>
+      <label class="field-label" for="defaultDirInput">默认输出文件夹</label>
+      <div class="input-row">
+        <input type="text" id="defaultDirInput" spellcheck="false" autocomplete="off">
+        <button class="ghost-btn" id="pickDirBtn" type="button">浏览…</button>
+      </div>
+
+      <section class="setting-group" id="assocGroup" hidden>
+        <div class="setting-row">
+          <div class="setting-text">
+            <span class="setting-title">在“打开方式”里显示</span>
+            <span class="setting-desc">只登记为候选程序，不会抢占系统默认程序。</span>
+          </div>
+          <button class="switch" id="assocSwitch" type="button" role="switch" aria-checked="false" aria-label="在打开方式里显示">
+            <span class="switch-knob" aria-hidden="true"></span>
+          </button>
+        </div>
+        <button class="ghost-btn wide" id="defaultAppBtn" type="button">去系统设置设为默认应用</button>
+      </section>
+
+      <section class="setting-group" id="uninstallGroup" hidden>
+        <div class="setting-row">
+          <div class="setting-text">
+            <span class="setting-title">卸载本软件</span>
+            <span class="setting-desc">一并清理“打开方式”登记与运行数据，不留残留。</span>
+          </div>
+        </div>
+        <button class="ghost-btn wide danger" id="uninstallBtn" type="button">卸载本软件</button>
+      </section>
+
+      <p class="setting-note" id="portableNote" hidden>免安装版不写系统设置，也不会向 C 盘写入任何文件。</p>
+
+      <div class="modal-actions">
+        <button class="ghost-btn" id="cancelSettings" type="button">取消</button>
+        <button class="primary-btn small" id="saveSettings" type="button">保存</button>
+      </div>
+      <p class="modal-credit">StupidPenguin-jpg制作</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="bridge-tauri.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

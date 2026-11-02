@@ -1,0 +1,45 @@
+{
+  "name": "anycompresssionthatmaywork",
+  "version": "1.0.0",
+  "description": "AnyCompresssionThatMayWork - Windows 压缩/解压工具",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win dir"
+  },
+  "build": {
+    "appId": "com.anycompresssionthatmaywork.app",
+    "productName": "AnyCompresssionThatMayWork",
+    "electronDist": "node_modules/electron/dist",
+    "directories": {
+      "output": "dist",
+      "buildResources": "resources"
+    },
+    "files": [
+      "electron/**/*",
+      "web/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "cli",
+        "to": "cli"
+      }
+    ],
+    "win": {
+      "icon": "resources/icon.png",
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0"
+  }
+}
